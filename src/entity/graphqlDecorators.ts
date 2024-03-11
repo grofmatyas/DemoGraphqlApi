@@ -52,7 +52,7 @@ export function GraphqlInputType(
   return InputType(nameOrOptions, options);
 }
 
-export function graphqlRegisterEnumType<TEnum extends object>(
+export function graphqlRegisterEnumType<TEnum extends Record<string, any>>(
   enumObj: TEnum,
   enumConfig: EnumConfig<TEnum>,
 ): void {

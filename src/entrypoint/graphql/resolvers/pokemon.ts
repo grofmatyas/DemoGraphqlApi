@@ -14,6 +14,7 @@ import { GraphqlContext } from "../../../infrastructure/graphql/context";
 import { ApiLogger } from "../../../infrastructure/logger/logger";
 import {
   GraphqlArg,
+  GraphqlAuthorized,
   GraphqlCtx,
   GraphqlQuery,
   GraphqlResolver,
@@ -30,6 +31,7 @@ export class PokemonResolver extends BaseResolver {
   }
 
   @GraphqlQuery(() => Pokemon)
+  @GraphqlAuthorized()
   public async pokemon(
     @GraphqlCtx() _ctx: GraphqlContext,
     @GraphqlArg("input", () => PokemonInput, { nullable: false })
@@ -49,6 +51,7 @@ export class PokemonResolver extends BaseResolver {
   }
 
   @GraphqlQuery(() => PaginatedPokemonResponse)
+  @GraphqlAuthorized()
   public async pokemons(
     @GraphqlCtx() _ctx: GraphqlContext,
     @GraphqlArg("input", () => PokemonsInput, { nullable: true })

@@ -37,25 +37,25 @@ export function OrmEntity(
   return Entity(options);
 }
 
-export function OrmPrimaryKey<T extends object>(
+export function OrmPrimaryKey<T extends Record<string, any>>(
   options?: PrimaryKeyOptions<T>,
 ): (target: Partial<any>, propertyName: string) => any {
   return PrimaryKey(options);
 }
 
-export function OrmProperty<T extends object>(
+export function OrmProperty<T extends Record<string, any>>(
   options?: PropertyOptions<any>,
 ): (target: any, propertyName: string) => any {
   return Property<T>(options);
 }
 
-export function OrmEnum<T extends object>(
+export function OrmEnum<T extends Record<string, any>>(
   options?: EnumOptions<AnyEntity> | (() => Dictionary),
 ): (target: any, propertyName: string) => any {
   return Enum<T>(options);
 }
 
-export function OrmManyToMany<T extends object, O>(
+export function OrmManyToMany<T extends Record<string, any>, O>(
   entity?: ManyToManyOptions<T, O> | string | (() => EntityName<T>),
   mappedBy?: (string & keyof T) | ((e: T) => any),
   options?: Partial<ManyToManyOptions<T, O>>,
@@ -64,6 +64,6 @@ export function OrmManyToMany<T extends object, O>(
 }
 
 export class OrmCollection<
-  T extends object,
-  O extends object = object,
+  T extends Record<string, any>,
+  O extends Record<string, any> = Record<string, any>,
 > extends Collection<T, O> {}

@@ -1,3 +1,4 @@
+import { AuthorizationChecker } from "./authorization";
 import { NonEmptyArray, buildGraphqlSchema } from "./decorators";
 import { ErrorResolver } from "./resolvers/error";
 import { PokemonResolver } from "./resolvers/pokemon";
@@ -16,4 +17,5 @@ export const typeDefs = buildGraphqlSchema({
   resolvers: resolversArray,
   container: ApiContainer,
   validate: { forbidUnknownValues: false },
+  authChecker: AuthorizationChecker,
 });

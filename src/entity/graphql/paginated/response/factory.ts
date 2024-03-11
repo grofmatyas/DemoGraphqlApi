@@ -18,7 +18,7 @@ export abstract class PaginatedResponseClassAbstract<TEntries> {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function PaginatedResponseFactory<TEntries extends object>(
+export function PaginatedResponseFactory<TEntries extends Record<string, any>>(
   itemsFieldValue: ClassType<TEntries>,
 ) {
   @GraphqlEntity(`Paginated${itemsFieldValue.name}Response`)

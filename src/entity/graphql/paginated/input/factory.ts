@@ -16,7 +16,7 @@ export abstract class PaginatedInputClassAbstract<TItemsFieldValue> {
 }
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export default function PaginatedInputFactory<TItemsFieldValue extends object>(
+export default function PaginatedInputFactory<TItemsFieldValue extends Record<string, any>>(
   itemsFieldValue: ClassType<TItemsFieldValue>,
 ) {
   @GraphqlInputType(`Paginated${itemsFieldValue.name}Input`)

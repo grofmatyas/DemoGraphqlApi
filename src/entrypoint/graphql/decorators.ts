@@ -10,16 +10,20 @@ import {
   Mutation,
   buildSchema,
   BuildSchemaOptions,
+  Authorized,
+  AuthCheckerInterface,
+  ResolverData,
 } from "type-graphql";
 import {
   ReturnTypeFunc,
   ClassTypeResolver,
   AdvancedOptions,
+  MethodAndPropDecorator,
 } from "type-graphql/build/typings/decorators/types";
 
 export function GraphqlResolver(): ClassDecorator;
 export function GraphqlResolver(typeFunc: ClassTypeResolver): ClassDecorator;
-export function GraphqlResolver(objectType: ClassType): ClassDecorator;
+export function GraphqlResolver(object: ClassType): ClassDecorator;
 export function GraphqlResolver(objectTypeOrTypeFunc?: any): ClassDecorator {
   return Resolver(objectTypeOrTypeFunc);
 }
@@ -76,5 +80,16 @@ export function buildGraphqlSchema(
 ): Promise<GraphQLSchema> {
   return buildSchema(options);
 }
+
+export function GraphqlAuthorized(): MethodAndPropDecorator;
+export function GraphqlAuthorized<RoleType = string>(roles: readonly RoleType[]): MethodAndPropDecorator;
+export function GraphqlAuthorized<RoleType = string>(...roles: readonly RoleType[]): MethodAndPropDecorator;
+export function GraphqlAuthorized(...roles: any): MethodAndPropDecorator {
+  return Authorized(roles);
+}
+
+export interface GraphqlAuthCheckerInterface<T extends Record<string, any>> extends AuthCheckerInterface<T> {}
+
+export interface GraphqlResolverData<T extends Record<string, any>> extends ResolverData<T> {}
 
 export { NonEmptyArray } from "type-graphql";

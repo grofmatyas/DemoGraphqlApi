@@ -16,6 +16,7 @@ import { ApiLogger } from "../../../infrastructure/logger/logger";
 import { NicknameService } from "../../../service/nickname";
 import {
   GraphqlArg,
+  GraphqlAuthorized,
   GraphqlCtx,
   GraphqlMutation,
   GraphqlQuery,
@@ -34,6 +35,7 @@ export class TrainerResolver extends BaseResolver {
   }
 
   @GraphqlQuery(() => Trainer)
+  @GraphqlAuthorized()
   public async trainer(
     @GraphqlCtx() _ctx: GraphqlContext,
     @GraphqlArg("input", () => TrainerInput, { nullable: false })
@@ -55,6 +57,7 @@ export class TrainerResolver extends BaseResolver {
   }
 
   @GraphqlQuery(() => PaginatedTrainerResponse)
+  @GraphqlAuthorized()
   public async trainers(
     @GraphqlCtx() _ctx: GraphqlContext,
     @GraphqlArg("input", () => TrainersInput, { nullable: true })
@@ -79,6 +82,7 @@ export class TrainerResolver extends BaseResolver {
   }
 
   @GraphqlMutation(() => Boolean)
+  @GraphqlAuthorized()
   public async setTrainerNickname(
     @GraphqlArg("input", () => SetTrainerNicknameInput, { validate: true })
     input: SetTrainerNicknameInput,

@@ -1,5 +1,6 @@
 This is Demo Graphql API
 
+Warning! This is work in progress. Some features may be missing and same todos may be redundant
 
 Decisions:
 - no default imports - easier to refactor names
