@@ -1,7 +1,0 @@
-{
-  "watch": ["src/**/*.ts", "src/**/*.graphql"],
-  "ignore": ["src/entrypoint/graphql/types.ts"],
-  "execMap": {
-    "ts": "ts-node --transpile-only --compiler-options '{\"module\":\"commonjs\"}'"
-  }
-}

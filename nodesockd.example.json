@@ -1,7 +1,0 @@
-{
-  "script": "build/app.js",
-  "tmpDir": "/tmp",
-  "socketFile": "api.sock",
-  "listenVar": "LISTEN_ON",
-  "ipcFile": "api.ipc"
-}
