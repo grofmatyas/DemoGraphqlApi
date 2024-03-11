@@ -1,0 +1,6 @@
+node_modules
+build
+dist
+.eslintcache
+temp
+sqlite.db

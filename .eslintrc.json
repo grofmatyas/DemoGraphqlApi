@@ -1,0 +1,51 @@
+{
+  "root": true,
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb-typescript/base",
+    "plugin:import/recommended",
+    "prettier"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": { "project": ["./tsconfig.json"] },
+  "plugins": ["@typescript-eslint"],
+  "rules": {
+    // import
+    "import/order": [
+      "warn",
+      {
+        "groups": [
+          ["builtin", "external"],
+          ["sibling", "parent", "index", "object", "internal"]
+        ],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ],
+    "import/named": ["off"],
+
+    // airbnb
+
+    // recommended
+    "@typescript-eslint/no-explicit-any": "off", // not ideal, but sometimes explicit any is necessary
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ],
+    "@typescript-eslint/strict-boolean-expressions": [
+      "error",
+      {
+        "allowAny": true,
+        "allowString": true,
+        "allowNullableString": true,
+        "allowNumber": true,
+        "allowNullableNumber": true
+      }
+    ]
+  },
+  "ignorePatterns": ["src/**/*.test.ts"]
+}

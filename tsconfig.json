@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "ESNext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "baseUrl": "./src",
+    "rootDir": "src",
+
+    "strict": true,
+    "declaration": true,
+    "strictPropertyInitialization": false,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "sourceMap": true
+  },
+  "include": ["src/**/*"],
+  "files": ["src/infrastructure/config/environment.d.ts"],
+  "ts-node": {
+    "transpileOnly": true
+  },
+  "mikro-orm": {
+    "useTsNode": true
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node --no-warnings=ExperimentalWarning --loader ts-node/esm src/app.ts",
+    "test": "vitest"
+  }
+}
