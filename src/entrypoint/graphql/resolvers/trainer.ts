@@ -1,3 +1,5 @@
+import { GraphQLResolveInfo } from "graphql";
+
 import { BaseResolver } from "./base";
 import { DatabaseDataProvider } from "../../../dataProvider/database/dataProvider";
 import { Trainer } from "../../../entity/base/trainer.entity";
@@ -18,6 +20,7 @@ import {
   GraphqlArg,
   GraphqlAuthorized,
   GraphqlCtx,
+  GraphqlInfo,
   GraphqlMutation,
   GraphqlQuery,
   GraphqlResolver,
@@ -39,6 +42,7 @@ export class TrainerResolver extends BaseResolver {
   public async trainer(
     @GraphqlCtx() _ctx: GraphqlContext,
     @GraphqlArg("input", () => TrainerInput, { nullable: false })
+    @GraphqlInfo() info: GraphQLResolveInfo,
     input: TrainerInput,
   ): Promise<Trainer> {
     this.sanitizeInput(input);
@@ -47,7 +51,7 @@ export class TrainerResolver extends BaseResolver {
       .getEntityManager()
       .findOne(Trainer, {
         name: input.name,
-      });
+      }, { populate: this.fieldsToRelations<Trainer>(info) });
 
     if (trainer) {
       return trainer;
@@ -61,6 +65,7 @@ export class TrainerResolver extends BaseResolver {
   public async trainers(
     @GraphqlCtx() _ctx: GraphqlContext,
     @GraphqlArg("input", () => TrainersInput, { nullable: true })
+    @GraphqlInfo() info: GraphQLResolveInfo,
     input: PaginatedTrainersInput,
   ): Promise<PaginatedTrainerResponse> {
     this.sanitizeInput(input);
@@ -75,6 +80,7 @@ export class TrainerResolver extends BaseResolver {
         {
           limit: input.pageSize,
           offset: input.pageIndex * input.pageSize,
+          populate: this.fieldsToRelations<Trainer>(info),
         },
       );
 

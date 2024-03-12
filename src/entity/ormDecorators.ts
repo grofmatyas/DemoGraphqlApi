@@ -67,3 +67,5 @@ export class OrmCollection<
   T extends Record<string, any>,
   O extends Record<string, any> = Record<string, any>,
 > extends Collection<T, O> {}
+
+export { Populate } from "@mikro-orm/core";

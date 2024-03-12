@@ -1,3 +1,5 @@
+import { GraphQLResolveInfo } from "graphql";
+
 import { BaseResolver } from "./base";
 import { DatabaseDataProvider } from "../../../dataProvider/database/dataProvider";
 import { Pokemon } from "../../../entity/base/pokemon.entity";
@@ -16,6 +18,7 @@ import {
   GraphqlArg,
   GraphqlAuthorized,
   GraphqlCtx,
+  GraphqlInfo,
   GraphqlQuery,
   GraphqlResolver,
 } from "../decorators";
@@ -35,13 +38,14 @@ export class PokemonResolver extends BaseResolver {
   public async pokemon(
     @GraphqlCtx() _ctx: GraphqlContext,
     @GraphqlArg("input", () => PokemonInput, { nullable: false })
+    @GraphqlInfo() info: GraphQLResolveInfo,
     input: PokemonInput,
   ): Promise<Pokemon> {
     const pokemon = await this.databaseDataProvider
       .getEntityManager()
       .findOne(Pokemon, {
         name: input.name,
-      });
+      }, { populate: this.fieldsToRelations<Pokemon>(info) });
 
     if (pokemon) {
       return pokemon;
@@ -55,6 +59,7 @@ export class PokemonResolver extends BaseResolver {
   public async pokemons(
     @GraphqlCtx() _ctx: GraphqlContext,
     @GraphqlArg("input", () => PokemonsInput, { nullable: true })
+    @GraphqlInfo() info: GraphQLResolveInfo,
     input: PaginatedPokemonsInput,
   ): Promise<PaginatedPokemonResponse> {
     const pokemons = await this.databaseDataProvider
@@ -67,6 +72,7 @@ export class PokemonResolver extends BaseResolver {
         {
           limit: input.pageSize,
           offset: input.pageIndex * input.pageSize,
+          populate: this.fieldsToRelations<Pokemon>(info),
         },
       );
 

@@ -13,6 +13,7 @@ import {
   Authorized,
   AuthCheckerInterface,
   ResolverData,
+  Info
 } from "type-graphql";
 import {
   ReturnTypeFunc,
@@ -87,6 +88,11 @@ export function GraphqlAuthorized<RoleType = string>(...roles: readonly RoleType
 export function GraphqlAuthorized(...roles: any): MethodAndPropDecorator {
   return Authorized(roles);
 }
+
+export function GraphqlInfo(): ParameterDecorator {
+  return Info();
+}
+
 
 export interface GraphqlAuthCheckerInterface<T extends Record<string, any>> extends AuthCheckerInterface<T> {}
 

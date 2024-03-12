@@ -41,6 +41,7 @@
     "express": "4.18.3",
     "graphql": "^16.8.1",
     "graphql-depth-limit": "1.1.0",
+    "graphql-fields-to-relations": "^1.0.5",
     "graphql-middleware": "^6.1.35",
     "graphql-request": "6.1.0",
     "graphql-scalars": "^1.22.5",
