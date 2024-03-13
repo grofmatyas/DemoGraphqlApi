@@ -5,10 +5,7 @@ import { DatabaseDataProvider } from "../../../dataProvider/database/dataProvide
 import { Trainer } from "../../../entity/base/trainer.entity";
 import { TrainerInput } from "../../../entity/graphql/input/trainer";
 import { SetTrainerNicknameInput } from "../../../entity/graphql/mutation/input/setTrainerNickname";
-import {
-  PaginatedTrainersInput,
-  TrainersInput,
-} from "../../../entity/graphql/paginated/input/trainer";
+import { PaginatedTrainersInput } from "../../../entity/graphql/paginated/input/trainer";
 import { PaginatedTrainerResponse } from "../../../entity/graphql/paginated/response/trainer";
 import { ApiService } from "../../../infrastructure/container/decorators";
 import { ApiError } from "../../../infrastructure/errors/apiError";
@@ -42,16 +39,17 @@ export class TrainerResolver extends BaseResolver {
   public async trainer(
     @GraphqlCtx() _ctx: GraphqlContext,
     @GraphqlArg("input", () => TrainerInput, { nullable: false })
-    @GraphqlInfo() info: GraphQLResolveInfo,
     input: TrainerInput,
+    @GraphqlInfo() info: GraphQLResolveInfo,
   ): Promise<Trainer> {
-    this.sanitizeInput(input);
-
-    const trainer = await this.databaseDataProvider
-      .getEntityManager()
-      .findOne(Trainer, {
+    const trainer = await this.databaseDataProvider.getEntityManager().findOne(
+      Trainer,
+      this.removeUndefinedFromObject({
         name: input.name,
-      }, { populate: this.fieldsToRelations<Trainer>(info) });
+        nickname: input.nickname,
+      }),
+      { populate: this.fieldsToRelations<Trainer>(info) },
+    );
 
     if (trainer) {
       return trainer;
@@ -64,12 +62,10 @@ export class TrainerResolver extends BaseResolver {
   @GraphqlAuthorized()
   public async trainers(
     @GraphqlCtx() _ctx: GraphqlContext,
-    @GraphqlArg("input", () => TrainersInput, { nullable: true })
-    @GraphqlInfo() info: GraphQLResolveInfo,
+    @GraphqlArg("input", () => PaginatedTrainersInput, { nullable: true })
     input: PaginatedTrainersInput,
+    @GraphqlInfo() info: GraphQLResolveInfo,
   ): Promise<PaginatedTrainerResponse> {
-    this.sanitizeInput(input);
-
     const trainers = await this.databaseDataProvider
       .getEntityManager()
       .findAndCount(
@@ -80,7 +76,7 @@ export class TrainerResolver extends BaseResolver {
         {
           limit: input.pageSize,
           offset: input.pageIndex * input.pageSize,
-          populate: this.fieldsToRelations<Trainer>(info),
+          populate: this.fieldsToRelations<Trainer>(info, { root: 'entries' }),
         },
       );
 
@@ -94,20 +90,14 @@ export class TrainerResolver extends BaseResolver {
     input: SetTrainerNicknameInput,
     @GraphqlCtx() _ctx: GraphqlContext,
   ): Promise<boolean> {
-    this.sanitizeInput(input);
-
     const trainer = await this.databaseDataProvider
       .getEntityManager()
-      .findOne(Trainer, {
-        $or: [
-          {
-            name: input.trainer.name,
-          },
-          {
-            nickname: input.trainer.nickname,
-          },
-        ],
-      });
+      .findOne(Trainer, 
+        this.removeUndefinedFromObject({
+          name: input.trainer.name,
+          nickname: input.trainer.nickname,
+        }),
+      );
 
     if (!trainer) {
       throw new ApiError("Trainer not found", ErrorCode.NOT_FOUND);

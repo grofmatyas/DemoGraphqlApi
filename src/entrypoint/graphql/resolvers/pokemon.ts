@@ -4,10 +4,7 @@ import { BaseResolver } from "./base";
 import { DatabaseDataProvider } from "../../../dataProvider/database/dataProvider";
 import { Pokemon } from "../../../entity/base/pokemon.entity";
 import { PokemonInput } from "../../../entity/graphql/input/pokemon";
-import {
-  PaginatedPokemonsInput,
-  PokemonsInput,
-} from "../../../entity/graphql/paginated/input/pokemon";
+import { PaginatedPokemonsInput } from "../../../entity/graphql/paginated/input/pokemon";
 import { PaginatedPokemonResponse } from "../../../entity/graphql/paginated/response/pokemon";
 import { ApiService } from "../../../infrastructure/container/decorators";
 import { ApiError } from "../../../infrastructure/errors/apiError";
@@ -38,14 +35,16 @@ export class PokemonResolver extends BaseResolver {
   public async pokemon(
     @GraphqlCtx() _ctx: GraphqlContext,
     @GraphqlArg("input", () => PokemonInput, { nullable: false })
-    @GraphqlInfo() info: GraphQLResolveInfo,
     input: PokemonInput,
+    @GraphqlInfo() info: GraphQLResolveInfo,
   ): Promise<Pokemon> {
-    const pokemon = await this.databaseDataProvider
-      .getEntityManager()
-      .findOne(Pokemon, {
+    const pokemon = await this.databaseDataProvider.getEntityManager().findOne(
+      Pokemon,
+      {
         name: input.name,
-      }, { populate: this.fieldsToRelations<Pokemon>(info) });
+      },
+      { populate: this.fieldsToRelations<Pokemon>(info) },
+    );
 
     if (pokemon) {
       return pokemon;
@@ -58,21 +57,21 @@ export class PokemonResolver extends BaseResolver {
   @GraphqlAuthorized()
   public async pokemons(
     @GraphqlCtx() _ctx: GraphqlContext,
-    @GraphqlArg("input", () => PokemonsInput, { nullable: true })
-    @GraphqlInfo() info: GraphQLResolveInfo,
+    @GraphqlArg("input", () => PaginatedPokemonsInput, { nullable: true })
     input: PaginatedPokemonsInput,
+    @GraphqlInfo() info: GraphQLResolveInfo,
   ): Promise<PaginatedPokemonResponse> {
     const pokemons = await this.databaseDataProvider
       .getEntityManager()
       .findAndCount(
         Pokemon,
-        {
-          name: { $in: input.filter?.name_in },
-        },
+        this.removeUndefinedFromObject({
+          name: input.filter?.name_in ? { $in: input.filter?.name_in } : undefined,
+        }),
         {
           limit: input.pageSize,
           offset: input.pageIndex * input.pageSize,
-          populate: this.fieldsToRelations<Pokemon>(info),
+          populate: this.fieldsToRelations<Pokemon>(info, { root: 'entries' }),
         },
       );
 

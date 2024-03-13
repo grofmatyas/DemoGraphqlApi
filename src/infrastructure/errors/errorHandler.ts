@@ -22,6 +22,7 @@ export abstract class ErrorHandler<
   }
 
   public apolloErrorHandler = (error: GraphQLError): GraphQLError => {
+    console.log(error);
     this.error("response error", error);
     const processId = this.getProcessId();
     const message: string = "Unknown Error";
@@ -32,6 +33,16 @@ export abstract class ErrorHandler<
         extensions: {
           processId,
           code: error?.extensions?.exception?.code,
+        },
+      });
+    }
+
+    // Graphql ValidationError
+    if (error.extensions.code === "GRAPHQL_VALIDATION_FAILED" || error.extensions.code === 'BAD_USER_INPUT') {
+      return new GraphQLError(error.message, {
+        extensions: {
+          processId,
+          code: ErrorCode.VALIDATION_FAILED,
         },
       });
     }

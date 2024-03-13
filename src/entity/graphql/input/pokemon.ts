@@ -7,5 +7,5 @@ export class PokemonInput {
   @GraphqlField(() => String, { nullable: false })
   @IsString()
   @MinLength(1)
-  public name: string;
+  public name: string[];
 }

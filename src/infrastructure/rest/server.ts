@@ -40,8 +40,7 @@ export class ServerREST {
         credentials: true,
       }),
     );
-    // TODO: bodyParser deprecation
-    this.server.use(bodyParser({ limit: "50mb" })); // Postmark's maximum inboud email size is 35 MB
+
     this.server.use(bodyParser.urlencoded({ extended: false }));
 
     this.server.use((_req, _res, next) => {

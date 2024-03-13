@@ -1,13 +1,11 @@
-import { GraphQLResolveInfo } from 'graphql';
-import fieldsToRelations from 'graphql-fields-to-relations';
+import { GraphQLResolveInfo } from "graphql";
+import fieldsToRelations from "graphql-fields-to-relations";
 
 import { DatabaseDataProvider } from "../../../dataProvider/database/dataProvider";
 import { PaginatedInputClassAbstract } from "../../../entity/graphql/paginated/input/factory";
 import { PaginatedResponseClassAbstract } from "../../../entity/graphql/paginated/response/factory";
-import { Populate } from '../../../entity/ormDecorators';
+import { Populate } from "../../../entity/ormDecorators";
 import { ApiService } from "../../../infrastructure/container/decorators";
-import { ApiError } from "../../../infrastructure/errors/apiError";
-import { ErrorCode } from "../../../infrastructure/errors/errorMessages";
 import { ApiLogger } from "../../../infrastructure/logger/logger";
 import { GraphqlResolver } from "../decorators";
 
@@ -23,30 +21,20 @@ export class BaseResolver {
     return this.databaseDataProvider.getEntityManager();
   }
 
-  protected fieldsToRelations<T extends Record<string, any>>(input: GraphQLResolveInfo): Populate<T, string> | undefined {
+  protected fieldsToRelations<T extends Record<string, any>>(
+    input: GraphQLResolveInfo,
+    options?: {
+      depth?: number | undefined;
+      root?: string | undefined;
+      excludeFields?: string[] | undefined;
+  }
+  ): Populate<T, string> | undefined {
     // @ts-expect-error Error due to different graphql version in graphql-fields-to-relations that in my repo
-    return fieldsToRelations(input)
+    return fieldsToRelations(input, options);
   }
 
-  protected sanitizeInput(input: unknown): void | never {
-    if (input === null) {
-      return;
-    }
-    if (typeof input === "object") {
-      // @ts-expect-error TODO: this
-      Object.keys(input).map((key) => this.sanitizeInput(input[key]));
-    }
-    if (Array.isArray(input)) {
-      for (const item of input) {
-        this.sanitizeInput(item);
-      }
-    }
-    if (typeof input === "string" && input === "") {
-      throw new ApiError(
-        "Empty string is not a valid input",
-        ErrorCode.VALIDATION_FAILED,
-      );
-    }
+  protected removeUndefinedFromObject<T>(input: T): T {
+    return JSON.parse(JSON.stringify(input));
   }
 
   protected generatePaginatedResponse<T, U>(

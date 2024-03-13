@@ -34,6 +34,6 @@ export class NicknameService extends Service {
       .forkEntityManager()
       .persistAndFlush(trainer);
 
-    // TODO: Handle problem that unflushed stuff is flushed in express
+    // TODO: Handle problem that unflushed stuff is flushed in express middleware
   };
 }

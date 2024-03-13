@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "engines": {
-    "node": ">=18.12.0 <20.0.0"
+    "node": ">=18.12.0"
   },
   "exports": "./dist/app.js",
   "scripts": {
@@ -17,7 +17,8 @@
     "lint:fix": "eslint 'src/**/*.{ts,graphql}' --fix",
     "migration:create": "ts-node src/migrations/scripts/create.ts",
     "migration:up": "ts-node src/migrations/scripts/up.ts",
-    "migration:down": "ts-node src/migrations/scripts/down.ts"
+    "migration:down": "ts-node src/migrations/scripts/down.ts",
+    "seed:up": "ts-node src/testing/seed/scripts/seed.ts"
   },
   "dependencies": {
     "@debugr/apollo": "^3.0.0-rc.9",
@@ -29,6 +30,7 @@
     "@mikro-orm/core": "^6.1.9",
     "@mikro-orm/migrations": "^6.1.9",
     "@mikro-orm/reflection": "^6.1.9",
+    "@mikro-orm/seeder": "^6.1.9",
     "@mikro-orm/sqlite": "^6.1.9",
     "apollo-server-core": "3.13.0",
     "apollo-server-express": "3.13.0",
@@ -54,6 +56,7 @@
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@faker-js/faker": "^8.4.1",
     "@graphql-codegen/add": "5.0.2",
     "@graphql-codegen/cli": "5.0.2",
     "@graphql-codegen/typescript": "4.0.6",

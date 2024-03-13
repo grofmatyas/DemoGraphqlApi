@@ -1,4 +1,7 @@
-import { ApolloServerPluginLandingPageGraphQLPlayground } from "apollo-server-core";
+import {
+  ApolloServerPluginLandingPageGraphQLPlayground,
+  PluginDefinition,
+} from "apollo-server-core";
 import { ApolloServer, Config } from "apollo-server-express";
 import express from "express";
 import depthLimit from "graphql-depth-limit";
@@ -52,20 +55,23 @@ export class ServerGraphql {
       }),
       validationRules: [depthLimit(8)],
       formatError: this.container.logger.apolloErrorHandler,
-      introspection: true,
+      introspection: this.container.config.system.environment !== "PROD",
       cache: "bounded",
       debug: this.container.config.system.environment === "DEVELOP",
       plugins: [
-        ApolloServerPluginLandingPageGraphQLPlayground,
-        this.container.logger.getPlugin("apollo"),
-      ],
+        this.container.logger.getPlugin("apollo") as PluginDefinition,
+      ].concat(
+        this.container.config.system.environment !== "PROD"
+          ? ApolloServerPluginLandingPageGraphQLPlayground
+          : [],
+      ),
     };
 
     this.server = new ApolloServer(apolloConfig);
 
     await this.server.start();
     this.server.applyMiddleware({
-      // @ts-expect-error TODO: this
+      // @ts-expect-error Necessary because of different express version in Apollo and this repo
       app: serverRest.server,
       path: this.container.config.system.graphqlEndpoint,
       cors: {

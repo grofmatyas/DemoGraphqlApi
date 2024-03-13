@@ -47,7 +47,7 @@ export class ApiConfig {
       },
     },
     database: {
-      entities: ["./src/entity/**/*.entity.js"],
+      entities: ["./dist/entity/**/*.entity.js"],
       entitiesTs: ["./src/entity/**/*.entity.ts"],
       dbName: "sqlite.db",
       debug: this.system.environment === "TEST",
@@ -62,6 +62,13 @@ export class ApiConfig {
         dropTables: false,
         safe: false,
         snapshot: true,
+        emit: "ts" as const,
+      },
+      seeder: {
+        path: "./dist/testing/seed/seeder",
+        pathTs: "./src/testing/seed/seeder",
+        defaultSeeder: "DatabaseSeeder",
+        glob: "!(*.d|*.test).{js,ts}",
         emit: "ts" as const,
       },
     },

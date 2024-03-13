@@ -6,7 +6,6 @@ import {
   OrmEntity,
   OrmIndex,
   OrmManyToMany,
-  OrmPrimaryKey,
   OrmProperty,
   OrmUnique,
 } from "../ormDecorators";
@@ -16,9 +15,6 @@ import {
 @OrmIndex({ properties: ["name"] })
 @OrmUnique({ properties: ["name"] })
 export class Trainer extends ApiBaseEntity {
-  @OrmPrimaryKey()
-  id!: number;
-
   @GraphqlField()
   @OrmProperty()
   name!: string;

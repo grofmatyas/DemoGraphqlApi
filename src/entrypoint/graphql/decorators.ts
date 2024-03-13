@@ -13,7 +13,7 @@ import {
   Authorized,
   AuthCheckerInterface,
   ResolverData,
-  Info
+  Info,
 } from "type-graphql";
 import {
   ReturnTypeFunc,
@@ -83,8 +83,12 @@ export function buildGraphqlSchema(
 }
 
 export function GraphqlAuthorized(): MethodAndPropDecorator;
-export function GraphqlAuthorized<RoleType = string>(roles: readonly RoleType[]): MethodAndPropDecorator;
-export function GraphqlAuthorized<RoleType = string>(...roles: readonly RoleType[]): MethodAndPropDecorator;
+export function GraphqlAuthorized<RoleType = string>(
+  roles: readonly RoleType[],
+): MethodAndPropDecorator;
+export function GraphqlAuthorized<RoleType = string>(
+  ...roles: readonly RoleType[]
+): MethodAndPropDecorator;
 export function GraphqlAuthorized(...roles: any): MethodAndPropDecorator {
   return Authorized(roles);
 }
@@ -93,9 +97,10 @@ export function GraphqlInfo(): ParameterDecorator {
   return Info();
 }
 
+export interface GraphqlAuthCheckerInterface<T extends Record<string, any>>
+  extends AuthCheckerInterface<T> {}
 
-export interface GraphqlAuthCheckerInterface<T extends Record<string, any>> extends AuthCheckerInterface<T> {}
-
-export interface GraphqlResolverData<T extends Record<string, any>> extends ResolverData<T> {}
+export interface GraphqlResolverData<T extends Record<string, any>>
+  extends ResolverData<T> {}
 
 export { NonEmptyArray } from "type-graphql";

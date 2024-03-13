@@ -122,15 +122,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "id": {
-          "name": "id",
-          "type": "integer",
-          "unsigned": true,
-          "autoincrement": true,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
         "created_at": {
           "name": "created_at",
           "type": "datetime",
@@ -190,8 +181,8 @@
         },
         {
           "keyName": "primary",
-          "columnNames": ["uuid", "id"],
-          "composite": true,
+          "columnNames": ["uuid"],
+          "composite": false,
           "constraint": true,
           "primary": true,
           "unique": true
@@ -212,15 +203,6 @@
           "nullable": false,
           "mappedType": "text"
         },
-        "trainer_id": {
-          "name": "trainer_id",
-          "type": "integer",
-          "unsigned": false,
-          "autoincrement": false,
-          "primary": false,
-          "nullable": false,
-          "mappedType": "integer"
-        },
         "pokemon_uuid": {
           "name": "pokemon_uuid",
           "type": "text",
@@ -234,6 +216,14 @@
       "name": "trainer_pokedex",
       "indexes": [
         {
+          "columnNames": ["trainer_uuid"],
+          "composite": false,
+          "keyName": "trainer_pokedex_trainer_uuid_index",
+          "constraint": false,
+          "primary": false,
+          "unique": false
+        },
+        {
           "columnNames": ["pokemon_uuid"],
           "composite": false,
           "keyName": "trainer_pokedex_pokemon_uuid_index",
@@ -242,16 +232,8 @@
           "unique": false
         },
         {
-          "keyName": "trainer_pokedex_trainer_uuid_trainer_id_index",
-          "columnNames": ["trainer_uuid", "trainer_id"],
-          "composite": true,
-          "constraint": false,
-          "primary": false,
-          "unique": false
-        },
-        {
           "keyName": "primary",
-          "columnNames": ["trainer_uuid", "trainer_id", "pokemon_uuid"],
+          "columnNames": ["trainer_uuid", "pokemon_uuid"],
           "composite": true,
           "constraint": true,
           "primary": true,
@@ -260,11 +242,11 @@
       ],
       "checks": [],
       "foreignKeys": {
-        "trainer_pokedex_trainer_uuid_trainer_id_foreign": {
-          "constraintName": "trainer_pokedex_trainer_uuid_trainer_id_foreign",
-          "columnNames": ["trainer_uuid", "trainer_id"],
+        "trainer_pokedex_trainer_uuid_foreign": {
+          "constraintName": "trainer_pokedex_trainer_uuid_foreign",
+          "columnNames": ["trainer_uuid"],
           "localTableName": "trainer_pokedex",
-          "referencedColumnNames": ["uuid", "id"],
+          "referencedColumnNames": ["uuid"],
           "referencedTableName": "trainer",
           "deleteRule": "cascade",
           "updateRule": "cascade"

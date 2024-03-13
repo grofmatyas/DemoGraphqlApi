@@ -1,4 +1,4 @@
-import { IsIn, IsString } from "class-validator";
+import { IsString } from "class-validator";
 
 import { GraphqlField, GraphqlInputType } from "../../../graphqlDecorators";
 import { TrainerInput } from "../../input/trainer";
@@ -13,6 +13,5 @@ export class SetTrainerNicknameInput {
   public nickname?: string;
 
   @GraphqlField(() => TrainerInput)
-  @IsIn(Object.values(TrainerInput))
   public trainer: TrainerInput;
 }

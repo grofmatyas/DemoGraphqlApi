@@ -1,6 +1,7 @@
 import { RequestContext } from "@mikro-orm/core";
 import { Migrator, TSMigrationGenerator } from "@mikro-orm/migrations";
 import { TsMorphMetadataProvider } from "@mikro-orm/reflection";
+import { SeedManager } from "@mikro-orm/seeder";
 import { SqliteDriver } from "@mikro-orm/sqlite";
 
 import { DatabaseConnection } from "./connection";
@@ -26,7 +27,7 @@ export class DatabaseConnector {
           ...this.config.application.database.migrations,
           generator: TSMigrationGenerator,
         },
-        extensions: [Migrator],
+        extensions: [Migrator, SeedManager],
       });
     } else {
       throw new Error("Should init database connector only once");

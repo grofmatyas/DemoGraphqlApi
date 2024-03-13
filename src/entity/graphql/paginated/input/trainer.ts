@@ -4,13 +4,13 @@ import PaginatedInputFactory from "./factory";
 import { GraphqlField, GraphqlInputType } from "../../../graphqlDecorators";
 
 @GraphqlInputType()
-export class TrainersInput {
-  @GraphqlField(() => String, { nullable: true })
+class TrainersInput {
+  @GraphqlField(() => [String], { nullable: true })
   @IsString({ each: true })
   @MinLength(1, { each: true })
   public name_in?: string[];
 
-  @GraphqlField(() => String, { nullable: true })
+  @GraphqlField(() => [String], { nullable: true })
   @IsString({ each: true })
   @MinLength(1, { each: true })
   public nickname_in?: string[];
