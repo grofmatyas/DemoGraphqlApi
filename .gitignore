@@ -3,4 +3,4 @@ build
 dist
 .eslintcache
 temp
-sqlite.db
+sqlite_db

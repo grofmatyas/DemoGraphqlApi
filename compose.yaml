@@ -1,0 +1,11 @@
+services:
+  api:
+    build:
+      context: .
+    environment:
+      # NODE_ENV: PROD
+      NODE_ENV: DEVELOP
+    ports:
+      - 3000:3000
+    volumes:
+      - ./data:/usr/src/app/data

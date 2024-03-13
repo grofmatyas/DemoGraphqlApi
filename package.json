@@ -8,8 +8,8 @@
   "exports": "./dist/app.js",
   "scripts": {
     "start": "node dist/app.js",
-    "dev": "nodemon --watch './**/*.ts' --exec 'NODE_ENV=development ts-node' src/app.ts",
-    "build": "rm -rf dist && rsync -a --exclude='*.ts' src/* dist && tsc && tsc-alias",
+    "dev": "nodemon --watch './**/*.ts' --exec 'NODE_ENV=DEVELOP ts-node' src/app.ts",
+    "build": "rm -rf dist && tsc",
     "typecheck": "tsc --project tsconfig.json --noEmit",
     "prettier": "prettier --config-precedence prefer-file -c '**/*.{tsx,ts,js,jsx,json,graphql,scss,yml}'",
     "prettier:fix": "prettier --write --config-precedence prefer-file -c '**/*.{tsx,ts,js,jsx,json,graphql,scss,yml}'",
@@ -50,7 +50,6 @@
     "helmet": "7.1.0",
     "lodash": "4.17.21",
     "reflect-metadata": "^0.2.1",
-    "tsc-alias": "1.8.8",
     "type-graphql": "^2.0.0-beta.6",
     "typedi": "0.10.0",
     "uuid": "^9.0.1"

@@ -1,6 +1,6 @@
 This is Demo Graphql API
 
-Warning! This is work in progress. Some features may be missing and same todos may be redundant
+Warning! This is work in progress. Some features may be missing and same todos may exist. Also some bugs. 
 
 Decisions:
 - no default imports - easier to refactor names
@@ -11,6 +11,9 @@ Decisions:
 
 - TODO: Call as Transaction
 - TODO: Tests - ?Mocha+Chai or Vitest or some other framework?
+- TODO: Apollo 4
+- TODO: Fastify instead od express - why not as .env switcher?
+- TODO: CICD for prettier+lint+future tests
 
 Structure:
 - Connector
@@ -20,4 +23,5 @@ Structure:
 - Infrastructure
 - Migrations
 - Service
+- Testing
 - Utils

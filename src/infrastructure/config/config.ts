@@ -7,9 +7,7 @@ config({
   path: path.resolve(__dirname, "../../../.env"),
   sample: path.resolve(
     __dirname,
-    process.env.NODE_ENV === "test"
-      ? "../../testing/.test.example.env"
-      : "../../../.example.env",
+    "../../../.example.env",
   ),
 });
 
@@ -19,11 +17,11 @@ export type IEnvironment = "PROD" | "STAGE" | "TEST" | "DEVELOP";
 export class ApiConfig {
   public readonly system = {
     environment:
-      process.env.ENVIRONMENT === "PROD"
+      process.env.NODE_ENV === "PROD"
         ? "PROD"
-        : process.env.ENVIRONMENT === "STAGE"
+        : process.env.NODE_ENV === "STAGE"
           ? "STAGE"
-          : process.env.ENVIRONMENT === "TEST"
+          : process.env.NODE_ENV === "TEST"
             ? "TEST"
             : ("DEVELOP" as IEnvironment),
     listenOn: process.env.LISTEN_ON || "3000",
@@ -49,7 +47,7 @@ export class ApiConfig {
     database: {
       entities: ["./dist/entity/**/*.entity.js"],
       entitiesTs: ["./src/entity/**/*.entity.ts"],
-      dbName: "sqlite.db",
+      dbName: "./data/sqlite_db",
       debug: this.system.environment === "TEST",
       migrations: {
         tableName: "mikro_orm_migrations",

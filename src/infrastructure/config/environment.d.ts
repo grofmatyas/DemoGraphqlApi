@@ -7,7 +7,6 @@ declare global {
       LISTEN_ON?: string;
       ORIGIN?: string;
       NODE_ENV?: string;
-      ENVIRONMENT?: string;
       CLIENT_ORIGINS?: string;
       WORKER_ID?: string;
 
