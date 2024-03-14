@@ -5,10 +5,7 @@ import { ApiService } from "../container/decorators";
 
 config({
   path: path.resolve(__dirname, "../../../.env"),
-  sample: path.resolve(
-    __dirname,
-    "../../../.example.env",
-  ),
+  sample: path.resolve(__dirname, "../../../.example.env"),
 });
 
 export type IEnvironment = "PROD" | "STAGE" | "TEST" | "DEVELOP";

@@ -66,12 +66,14 @@ export class PokemonResolver extends BaseResolver {
       .findAndCount(
         Pokemon,
         this.removeUndefinedFromObject({
-          name: input.filter?.name_in ? { $in: input.filter?.name_in } : undefined,
+          name: input.filter?.name_in
+            ? { $in: input.filter?.name_in }
+            : undefined,
         }),
         {
           limit: input.pageSize,
           offset: input.pageIndex * input.pageSize,
-          populate: this.fieldsToRelations<Pokemon>(info, { root: 'entries' }),
+          populate: this.fieldsToRelations<Pokemon>(info, { root: "entries" }),
         },
       );
 

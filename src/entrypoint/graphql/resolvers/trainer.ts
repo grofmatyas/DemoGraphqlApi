@@ -76,7 +76,7 @@ export class TrainerResolver extends BaseResolver {
         {
           limit: input.pageSize,
           offset: input.pageIndex * input.pageSize,
-          populate: this.fieldsToRelations<Trainer>(info, { root: 'entries' }),
+          populate: this.fieldsToRelations<Trainer>(info, { root: "entries" }),
         },
       );
 
@@ -90,14 +90,13 @@ export class TrainerResolver extends BaseResolver {
     input: SetTrainerNicknameInput,
     @GraphqlCtx() _ctx: GraphqlContext,
   ): Promise<boolean> {
-    const trainer = await this.databaseDataProvider
-      .getEntityManager()
-      .findOne(Trainer, 
-        this.removeUndefinedFromObject({
-          name: input.trainer.name,
-          nickname: input.trainer.nickname,
-        }),
-      );
+    const trainer = await this.databaseDataProvider.getEntityManager().findOne(
+      Trainer,
+      this.removeUndefinedFromObject({
+        name: input.trainer.name,
+        nickname: input.trainer.nickname,
+      }),
+    );
 
     if (!trainer) {
       throw new ApiError("Trainer not found", ErrorCode.NOT_FOUND);

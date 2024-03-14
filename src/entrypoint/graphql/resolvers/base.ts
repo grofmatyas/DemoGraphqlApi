@@ -27,7 +27,7 @@ export class BaseResolver {
       depth?: number | undefined;
       root?: string | undefined;
       excludeFields?: string[] | undefined;
-  }
+    },
   ): Populate<T, string> | undefined {
     // @ts-expect-error Error due to different graphql version in graphql-fields-to-relations that in my repo
     return fieldsToRelations(input, options);

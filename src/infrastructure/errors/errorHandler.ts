@@ -38,7 +38,10 @@ export abstract class ErrorHandler<
     }
 
     // Graphql ValidationError
-    if (error.extensions.code === "GRAPHQL_VALIDATION_FAILED" || error.extensions.code === 'BAD_USER_INPUT') {
+    if (
+      error.extensions.code === "GRAPHQL_VALIDATION_FAILED" ||
+      error.extensions.code === "BAD_USER_INPUT"
+    ) {
       return new GraphQLError(error.message, {
         extensions: {
           processId,
