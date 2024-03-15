@@ -27,6 +27,7 @@ export class ApiConfig {
     origin: process.env.ORIGIN,
     healthCheckEndpoint: "/health-check",
     graphqlEndpoint: "/v0/graphql",
+    docsEndpoint: '/docs',
     applicationName: "graphql-api",
   };
 

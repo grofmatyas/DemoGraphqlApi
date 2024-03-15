@@ -63,7 +63,7 @@ export class ServerREST {
       },
     });
     await this.server.register(swaggerUi, {
-      prefix: "/docs",
+      prefix: this.container.config.system.docsEndpoint,
       uiConfig: {
         docExpansion: "full",
       },
@@ -78,7 +78,8 @@ export class ServerREST {
     // Listen on http server
     this.server.listen(
       { port: this.container.config.system.listenOn },
-      (err, _address): void => {
+      (err, address): void => {
+        this.container.logger.info(`Docs listening at ${address}/${this.container.config.system.docsEndpoint}`);
         if (err) {
           this.container.logger.fatal("Server start error", err);
           throw err;
