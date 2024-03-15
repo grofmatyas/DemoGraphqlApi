@@ -2,7 +2,7 @@ import { DatabaseConnector } from "../../connector/database/connector";
 import { getContainerGraphqlApi } from "../../infrastructure/container/container";
 import { ApiContainer } from "../../infrastructure/container/decorators";
 
-(async () => {
+void (async () => {
   await getContainerGraphqlApi();
   const databaseConnector = ApiContainer.get(DatabaseConnector);
   const migrator = databaseConnector.getConnection().getMigrator();

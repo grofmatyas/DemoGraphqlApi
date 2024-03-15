@@ -35,6 +35,7 @@
     // airbnb
 
     // recommended
+    "@typescript-eslint/no-floating-promises": "error",
     "no-console": "error",
     "@typescript-eslint/no-explicit-any": "off", // not ideal, but sometimes explicit any is necessary
     "@typescript-eslint/no-unused-vars": [

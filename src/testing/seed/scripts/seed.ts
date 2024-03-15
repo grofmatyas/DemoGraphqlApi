@@ -3,7 +3,7 @@ import { getContainerGraphqlApi } from "../../../infrastructure/container/contai
 import { ApiContainer } from "../../../infrastructure/container/decorators";
 import { DatabaseSeeder } from "../seeder/databaseSeeder";
 
-(async () => {
+void (async () => {
   await getContainerGraphqlApi();
   const databaseConnector = ApiContainer.get(DatabaseConnector);
 

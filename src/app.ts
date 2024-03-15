@@ -36,4 +36,4 @@ const initiateServer = async (): Promise<void> => {
   });
 };
 
-initiateServer();
+void initiateServer();

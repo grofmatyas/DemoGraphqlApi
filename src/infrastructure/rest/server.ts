@@ -1,5 +1,7 @@
 import cors from "@fastify/cors";
 import helmet from "@fastify/helmet";
+import swagger from "@fastify/swagger";
+import swaggerUi from "@fastify/swagger-ui";
 import * as fastify from "fastify";
 import * as https from "https";
 import { IncomingMessage, ServerResponse } from "node:http";
@@ -49,6 +51,22 @@ export class ServerREST {
 
     this.server.addHook("onRequest", (_request, _reply, done) => {
       this.container.databaseDataProvider.createContext(done);
+    });
+
+    await this.server.register(swagger, {
+      openapi: {
+        info: {
+          title: "OpenApi documentation",
+          description: "OpenApi documentation",
+          version: "1.0.0",
+        },
+      },
+    });
+    await this.server.register(swaggerUi, {
+      prefix: "/docs",
+      uiConfig: {
+        docExpansion: "full",
+      },
     });
 
     // Simple and basic routes

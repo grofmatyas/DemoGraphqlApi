@@ -41,6 +41,6 @@ export class ServerGraphql {
       },
     };
 
-    serverRest.server.register(mercurius, options);
+    await serverRest.server.register(mercurius, options);
   };
 }

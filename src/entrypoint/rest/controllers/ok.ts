@@ -21,7 +21,7 @@ export class OkController extends BaseController {
     _request: RESTRequest,
     reply: RESTReply,
   ): Promise<void> => {
-    reply.send({ status: "ok" });
+    await reply.send({ status: "ok" });
   };
 
   public schema: Record<string, Record<string, any>> = {
