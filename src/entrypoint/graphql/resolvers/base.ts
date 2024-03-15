@@ -17,7 +17,7 @@ export class BaseResolver {
     protected readonly logger: ApiLogger,
   ) {}
 
-  public get em() {
+  protected get em() {
     return this.databaseDataProvider.getEntityManager();
   }
 

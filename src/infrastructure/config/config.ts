@@ -21,11 +21,11 @@ export class ApiConfig {
           : process.env.NODE_ENV === "TEST"
             ? "TEST"
             : ("DEVELOP" as IEnvironment),
-    listenOn: process.env.LISTEN_ON || "3000",
+    listenOn: Number(process.env.LISTEN_ON) || 3000,
     clientOrigins: process.env.CLIENT_ORIGINS,
     worker: process.env.WORKER_ID,
     origin: process.env.ORIGIN,
-    healthCheckEndpoint: "/.version",
+    healthCheckEndpoint: "/health-check",
     graphqlEndpoint: "/v0/graphql",
     applicationName: "graphql-api",
   };

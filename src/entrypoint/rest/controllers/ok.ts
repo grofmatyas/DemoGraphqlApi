@@ -5,7 +5,7 @@ import { ApiLogger } from "../../../infrastructure/logger/logger";
 import { RESTReply, RESTRequest } from "../types";
 
 @ApiService()
-export class StatusController extends BaseController {
+export class OkController extends BaseController {
   public constructor(
     databaseDataProvider: DatabaseDataProvider,
     logger: ApiLogger,
@@ -15,7 +15,7 @@ export class StatusController extends BaseController {
 
   public method = "GET" as const;
 
-  public url: string = "/status";
+  public url: string = "/";
 
   public handler = async (
     _request: RESTRequest,

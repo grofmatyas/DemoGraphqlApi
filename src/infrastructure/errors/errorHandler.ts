@@ -4,9 +4,9 @@ import {
   TContextBase,
   TContextShape,
 } from "@debugr/core";
-import { GraphQLError } from "graphql";
+import { ExecutionResult, GraphQLError } from "graphql";
+import { MercuriusContext } from "mercurius";
 
-import { ApiError } from "./apiError";
 import { ErrorCode } from "./errorMessages";
 import { ApiConfig } from "../config/config";
 
@@ -21,43 +21,49 @@ export abstract class ErrorHandler<
     super(loggerOptions);
   }
 
-  public apolloErrorHandler = (error: GraphQLError): GraphQLError => {
-    console.log(error);
-    this.error("response error", error);
+  public graphqlErrorFormatter = <
+    TContext extends MercuriusContext = MercuriusContext,
+  >(
+    execution: ExecutionResult,
+    _context: TContext,
+  ): {
+    statusCode: number;
+    response: ExecutionResult;
+  } => {
     const processId = this.getProcessId();
-    const message: string = "Unknown Error";
-    const code: ErrorCode = ErrorCode.INTERNAL_SERVER_ERROR;
 
-    if ((error?.extensions?.exception as ApiError)?.isApiError) {
-      return new GraphQLError(error.message, {
+    const errors = execution.errors?.map((error) => {
+      this.error("response error", error);
+      const message: string = "Unknown Error";
+      const code: ErrorCode = ErrorCode.INTERNAL_SERVER_ERROR;
+
+      if (error?.extensions?.isApiError) {
+        return new GraphQLError(error.message, {
+          extensions: {
+            processId,
+            code: error?.extensions?.code,
+          },
+        });
+      }
+
+      // space for more error parsing
+
+      // Graphql ValidationError parsing
+
+      return new GraphQLError(message, {
         extensions: {
           processId,
-          code: error?.extensions?.exception?.code,
+          code,
         },
       });
-    }
-
-    // Graphql ValidationError
-    if (
-      error.extensions.code === "GRAPHQL_VALIDATION_FAILED" ||
-      error.extensions.code === "BAD_USER_INPUT"
-    ) {
-      return new GraphQLError(error.message, {
-        extensions: {
-          processId,
-          code: ErrorCode.VALIDATION_FAILED,
-        },
-      });
-    }
-
-    // space for more error parsing
-
-    return new GraphQLError(message, {
-      extensions: {
-        processId,
-        code,
-      },
     });
+
+    return {
+      statusCode: 500,
+      response: {
+        errors,
+      },
+    };
   };
 
   private getProcessId = (): string | string[] | undefined => {

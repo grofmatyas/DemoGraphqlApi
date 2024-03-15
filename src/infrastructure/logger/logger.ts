@@ -1,4 +1,3 @@
-import { ApolloCollector } from "@debugr/apollo";
 import { ConsoleHandler } from "@debugr/console";
 import {
   LogEntry,
@@ -8,7 +7,6 @@ import {
   HandlerPlugin,
 } from "@debugr/core";
 import { ElasticHandler } from "@debugr/elastic";
-import { ExpressCollector } from "@debugr/express";
 import dayjs from "dayjs";
 import * as util from "util";
 
@@ -49,23 +47,7 @@ export class ApiLogger extends ErrorHandler<ITaskContext, IGlobalContext> {
       globalContext: {
         workerId: Number.parseInt(config.system.worker || "0", 10),
       },
-      plugins: (
-        [
-          new ApolloCollector({
-            level: LogLevel.TRACE,
-          }),
-          new ExpressCollector({
-            level: LogLevel.TRACE,
-            response: {
-              captureBody: true,
-            },
-            request: {
-              captureBody: true,
-              excludeHeaders: ["authorization", "x-api-token"],
-            },
-          }),
-        ] as Plugin[]
-      ).concat(
+      plugins: ([] as Plugin[]).concat(
         isMock
           ? []
           : config.system.environment === "DEVELOP"
@@ -175,5 +157,30 @@ export class ApiLogger extends ErrorHandler<ITaskContext, IGlobalContext> {
     }
 
     return modifiedArgs;
+  }
+
+  public child(context: Record<string, any>, _options?: any): ApiLogger {
+    Object.keys(context).forEach((key) =>
+      this.setContextProperty(key as keyof ITaskContext, context[key]),
+    );
+    return this;
+  }
+
+  public warn(data: Record<string, any> | Error): this;
+  public warn(
+    message: string | [string, ...any],
+    data?: Record<string, any>,
+  ): this;
+  public warn(
+    message: string | [string, ...any],
+    error: Error,
+    data?: Record<string, any>,
+  ): this;
+  public warn(message: any, dataOrError?: any, maybeData?: any): this {
+    return this.warning(message, dataOrError, maybeData);
+  }
+
+  public get level() {
+    return "";
   }
 }

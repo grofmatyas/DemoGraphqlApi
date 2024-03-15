@@ -23,7 +23,7 @@ const initiateServer = async (): Promise<void> => {
   // Init Container
   const container = await getContainerGraphqlApi();
 
-  // Init Graphql and Express
+  // Init Graphql and REST
   const serverGraphql = new ServerGraphql(container);
   const routerREST = new RouterREST(container);
   const serverREST = new ServerREST(serverGraphql, routerREST, container);

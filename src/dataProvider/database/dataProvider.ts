@@ -1,7 +1,6 @@
 import { ApiEntityManager } from "./entityManager";
 import { DatabaseConnector } from "../../connector/database/connector";
 import { ApiService } from "../../infrastructure/container/decorators";
-import { NextFunction } from "../../infrastructure/rest/server";
 
 @ApiService()
 export class DatabaseDataProvider {
@@ -17,7 +16,9 @@ export class DatabaseDataProvider {
     return this.databaseConnector.getConnection().em;
   }
 
-  public createContext(next: NextFunction): any {
+  public createContext(
+    next: <TError extends Error>(err?: TError) => void,
+  ): any {
     return this.databaseConnector.createContext(next);
   }
 }

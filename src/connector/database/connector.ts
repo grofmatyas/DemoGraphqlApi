@@ -7,7 +7,6 @@ import { SqliteDriver } from "@mikro-orm/sqlite";
 import { DatabaseConnection } from "./connection";
 import { ApiConfig } from "../../infrastructure/config/config";
 import { ApiService } from "../../infrastructure/container/decorators";
-import { NextFunction } from "../../infrastructure/rest/server";
 
 @ApiService()
 export class DatabaseConnector {
@@ -44,7 +43,9 @@ export class DatabaseConnector {
     return this.connection;
   }
 
-  public createContext(next: NextFunction): any {
+  public createContext(
+    next: <TError extends Error>(err?: TError) => void,
+  ): any {
     return RequestContext.create(this.getConnection().em.fork(), next);
   }
 }

@@ -9,7 +9,7 @@ export class AuthorizationChecker
   implements GraphqlAuthCheckerInterface<GraphqlContext>
 {
   check({ context }: GraphqlResolverData<GraphqlContext>, _roles: string[]) {
-    const token = context.req.get("authorization");
+    const token = context.request.headers.authorization;
     if (!token) {
       throw new ApiError(
         "Missing authorization token",
