@@ -79,7 +79,9 @@ export class ServerREST {
     this.server.listen(
       { port: this.container.config.system.listenOn },
       (err, address): void => {
-        this.container.logger.info(`Docs listening at ${address}/${this.container.config.system.docsEndpoint}`);
+        this.container.logger.info(
+          `Docs listening at ${address}/${this.container.config.system.docsEndpoint}`,
+        );
         if (err) {
           this.container.logger.fatal("Server start error", err);
           throw err;
